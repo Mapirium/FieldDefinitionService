@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.2.xsd">
+
+    <changeSet id="1" author="surech">
+        <createTable tableName="fieldtype">
+            <column name="ID" type="BIGINT" autoIncrement="true" remarks="Technischer Primärschlüssel">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="KEYWORD" type="varchar(50)" remarks="Eindeutiges Schlüsselwort für diesen Typ">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="NAME" type="varchar(50)" remarks="Name dieses Feld-Types">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(250)" remarks="Beschreibung dieses Types">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="createdAt" type="DATETIME">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="2" author="surech">
+        <createTable tableName="fielddefinition">
+            <column name="ID" type="BIGINT" autoIncrement="true" remarks="Technischer Primärschlüssel">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="PUBLIC_ID" type="varchar(50)" remarks="Öffentlicher Schlüssel">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="TYPE_FK" type="BIGINT" remarks="Fremdschlüssel auf den Feld-Typ">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="MAP_ID" type="varchar(50)" remarks="Öffentlicher Schlüssel der Karte, zu welchem diese Definition gehört.">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LABEL" type="varchar(50)"
+                    remarks="Anschrift dieses Feldes. Wird dem Benutzer nebem dem eigentlichen Feld angezeigt">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(250)"
+                    remarks="Beschreibung dieses Feldes. Wird dem Benutzer zur Erklärung des Inhaltes angezeigt.">
+                <constraints nullable="true" unique="false"/>
+            </column>
+            <column name="MANDATORY" type="TINYINT(1)" defaultValueBoolean="false"
+                    remarks="Gibt an, ob das Feld zwingend ausgefüllt werden muss">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="createdAt" type="DATETIME">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="fielddefinition" baseColumnNames="TYPE_FK"
+                                 constraintName="FIELD_TYPE_FK"
+                                 referencedTableName="fieldtype"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <changeSet id="3" author="surech">
+        <insert tableName="fieldtype">
+            <column name="KEYWORD" value="string"/>
+            <column name="NAME" value="String"/>
+            <column name="DESCRIPTION" value="Ein einzeiliges Textfeld"/>
+            <column name="CREATEDAT" valueComputed="now()"/>
+        </insert>
+        <insert tableName="fieldtype">
+            <column name="KEYWORD" value="text"/>
+            <column name="NAME" value="Text"/>
+            <column name="DESCRIPTION" value="Ein mehrzeiliges Textfeld"/>
+            <column name="CREATEDAT" valueComputed="now()"/>
+        </insert>
+        <insert tableName="fieldtype">
+            <column name="KEYWORD" value="date"/>
+            <column name="NAME" value="Date"/>
+            <column name="DESCRIPTION" value="Eine Datumsauswahl"/>
+            <column name="CREATEDAT" valueComputed="now()"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="4" author="surech">
+        <dropUniqueConstraint tableName="fielddefinition" constraintName="LABEL"/>
+        <addUniqueConstraint tableName="fielddefinition" columnNames="LABEL,MAP_ID"/>
+    </changeSet>
+</databaseChangeLog>
