@@ -1,42 +1,47 @@
-package ch.mapirium.server.fielddefinitionservice.model;
+package ch.mapirium.server.fielddefinitionservice.rest.model;
 
-import ch.mapirium.server.common.jpa.model.PublicIdEntity;
+import org.springframework.hateoas.ResourceSupport;
 
-import javax.persistence.*;
+import java.util.Date;
 
 /**
- * Repräsentiert die Definition eines Feldes
+ * Definiert die REST-Resource für eine Feld-Definition
  */
-@Entity
-@Table(name = "fielddefinition")
-public class FieldDefinitionEntity extends PublicIdEntity {
+public class FieldDefinitionResource extends ResourceSupport {
 
-    /** Fremdschlüssel auf den Feld-Typ */
-    @ManyToOne
-    @JoinColumn(name = "type_fk", nullable = false)
-    private FieldTypeEntity fieldType;
+    /** Öffentlicher Schlüssel */
+    private String publicId;
+
+    /** Typ dieses Feldes */
+    private String fieldType;
 
     /** Öffentlicher Schlüssel der Karte, zu welchem diese Definition gehört. */
-    @Column(name = "map_id", nullable = false)
     private String mapId;
 
     /** Anschrift dieses Feldes. Wird dem Benutzer nebem dem eigentlichen Feld angezeigt */
-    @Column(name = "label", nullable = false)
     private String label;
 
     /** Beschreibung dieses Feldes. Wird dem Benutzer zur Erklärung des Inhaltes angezeigt. */
-    @Column(name = "description", nullable = false)
     private String description;
 
     /** Gibt an, ob dieses Feld zwingend auszufüllen ist */
-    @Column(name = "mandatory", nullable = false)
     private boolean mandatory = false;
 
-    public FieldTypeEntity getFieldType() {
+    private Date createdAt;
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
+    }
+
+    public String getFieldType() {
         return fieldType;
     }
 
-    public void setFieldType(FieldTypeEntity fieldType) {
+    public void setFieldType(String fieldType) {
         this.fieldType = fieldType;
     }
 
@@ -70,5 +75,13 @@ public class FieldDefinitionEntity extends PublicIdEntity {
 
     public void setMandatory(boolean mandatory) {
         this.mandatory = mandatory;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }
