@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * REST-Schnittstelle für die Feld-Definition
  */
 @RestController
-@RequestMapping(path = "/map/{mapId}/fielddefinition")
+@RequestMapping(path = "/map/{mapId}/pointdefinition/{pointDefId}/fielddefinition")
 public class FieldDefinitionRestController {
 
     @Autowired
@@ -39,7 +39,7 @@ public class FieldDefinitionRestController {
     }
 
     @RequestMapping(path = "/{publicId}", method = RequestMethod.GET)
-    public FieldDefinitionResource findByPublicId(@PathVariable("mapId") String mapId, @PathVariable("publicId") String publicId) {
+    public FieldDefinitionResource findByPublicId(@PathVariable("mapId") String mapId, @PathVariable("pointDefId") String pointDefId, @PathVariable("publicId") String publicId) {
         // Daten laden
         FieldDefinitionEntity field = fieldDefinitionRepository.findByPublicId(mapId, publicId);
 
@@ -54,9 +54,10 @@ public class FieldDefinitionRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public FieldDefinitionResource create(@PathVariable("mapId") String mapId, @RequestBody FieldDefinitionResource fieldDefinition) {
-        // Karten-ID übernehmen
+    public FieldDefinitionResource create(@PathVariable("mapId") String mapId, @PathVariable("pointDefId") String pointDefId, @RequestBody FieldDefinitionResource fieldDefinition) {
+        // IDs aus URL übernehmen
         fieldDefinition.setMapId(mapId);
+        fieldDefinition.setPointDefinitionId(pointDefId);
 
         // Entität erstellen
         FieldDefinitionEntity entity = fieldDefinitionMapper.toEntity(fieldDefinition);

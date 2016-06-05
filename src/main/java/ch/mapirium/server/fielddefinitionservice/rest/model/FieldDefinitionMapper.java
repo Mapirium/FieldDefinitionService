@@ -34,9 +34,10 @@ public class FieldDefinitionMapper {
         result.setCreatedAt(entity.getCreatedAt());
         result.setMandatory(entity.isMandatory());
         result.setFieldType(entity.getFieldType().getKeyword());
+        result.setPointDefinitionId(entity.getPointDefinitionId());
 
         // Link auf uns selbst
-        result.add(linkTo(methodOn(FieldDefinitionRestController.class).findByPublicId(result.getMapId(), result.getPublicId())).withSelfRel());
+        result.add(linkTo(methodOn(FieldDefinitionRestController.class).findByPublicId(result.getMapId(), result.getPointDefinitionId(), result.getPublicId())).withSelfRel());
 
         // Link auf den Feldtype
         result.add(linkTo(methodOn(FieldTypeController.class).getByKeyword(result.getFieldType())).withRel("fieldType"));
@@ -51,6 +52,7 @@ public class FieldDefinitionMapper {
         result.setDescription(resource.getDescription());
         result.setMapId(resource.getMapId());
         result.setMandatory(resource.isMandatory());
+        result.setPointDefinitionId(resource.getPointDefinitionId());
 
         // Den Typ auflösen
         FieldTypeEntity fieldType = fieldTypeRepository.findByKeyword(resource.getFieldType());

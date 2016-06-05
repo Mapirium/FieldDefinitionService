@@ -18,6 +18,9 @@ public class FieldDefinitionResource extends ResourceSupport {
     /** Öffentlicher Schlüssel der Karte, zu welchem diese Definition gehört. */
     private String mapId;
 
+    /** Öffentlicher Schlüssel der Karte, zu welchem diese Definition gehört. */
+    private String pointDefinitionId;
+
     /** Anschrift dieses Feldes. Wird dem Benutzer nebem dem eigentlichen Feld angezeigt */
     private String label;
 
@@ -51,6 +54,14 @@ public class FieldDefinitionResource extends ResourceSupport {
 
     public void setMapId(String mapId) {
         this.mapId = mapId;
+    }
+
+    public String getPointDefinitionId() {
+        return pointDefinitionId;
+    }
+
+    public void setPointDefinitionId(String pointDefinitionId) {
+        this.pointDefinitionId = pointDefinitionId;
     }
 
     public String getLabel() {

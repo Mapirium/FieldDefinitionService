@@ -20,6 +20,10 @@ public class FieldDefinitionEntity extends PublicIdEntity {
     @Column(name = "map_id", nullable = false)
     private String mapId;
 
+    /** Öffentlicher Schlüssel der Karte, zu welchem diese Definition gehört. */
+    @Column(name = "POINT_DEFINITION_ID", nullable = false)
+    private String pointDefinitionId;
+
     /** Anschrift dieses Feldes. Wird dem Benutzer nebem dem eigentlichen Feld angezeigt */
     @Column(name = "label", nullable = false)
     private String label;
@@ -46,6 +50,14 @@ public class FieldDefinitionEntity extends PublicIdEntity {
 
     public void setMapId(String mapId) {
         this.mapId = mapId;
+    }
+
+    public String getPointDefinitionId() {
+        return pointDefinitionId;
+    }
+
+    public void setPointDefinitionId(String pointDefinitionId) {
+        this.pointDefinitionId = pointDefinitionId;
     }
 
     public String getLabel() {

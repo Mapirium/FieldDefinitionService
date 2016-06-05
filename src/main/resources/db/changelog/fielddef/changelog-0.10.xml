@@ -87,4 +87,12 @@
         <dropUniqueConstraint tableName="fielddefinition" constraintName="LABEL"/>
         <addUniqueConstraint tableName="fielddefinition" columnNames="LABEL,MAP_ID"/>
     </changeSet>
+
+    <changeSet id="5" author="surech">
+        <addColumn tableName="fielddefinition">
+            <column name="POINT_DEFINITION_ID" type="varchar(50)" remarks="Öffentlicher Schlüssel der Punktes, zu welchem diese Definition gehört.">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
