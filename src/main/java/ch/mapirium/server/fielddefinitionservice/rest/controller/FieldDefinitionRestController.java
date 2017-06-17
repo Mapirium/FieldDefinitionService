@@ -3,6 +3,8 @@ package ch.mapirium.server.fielddefinitionservice.rest.controller;
 import ch.mapirium.server.common.springmvc.exceptions.NotFoundException;
 import ch.mapirium.server.fielddefinitionservice.model.FieldDefinitionEntity;
 import ch.mapirium.server.fielddefinitionservice.repo.FieldDefinitionRepository;
+import ch.mapirium.server.fielddefinitionservice.rest.model.FieldDefinitionListMapper;
+import ch.mapirium.server.fielddefinitionservice.rest.model.FieldDefinitionListResource;
 import ch.mapirium.server.fielddefinitionservice.rest.model.FieldDefinitionMapper;
 import ch.mapirium.server.fielddefinitionservice.rest.model.FieldDefinitionResource;
 import ch.mapirium.server.fielddefinitionservice.service.FieldDefinitionService;
@@ -10,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * REST-Schnittstelle für die Feld-Definition
@@ -26,15 +27,18 @@ public class FieldDefinitionRestController {
     private FieldDefinitionMapper fieldDefinitionMapper;
 
     @Autowired
+    private FieldDefinitionListMapper fieldDefinitionListMapper;
+
+    @Autowired
     private FieldDefinitionService fieldDefinitionService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<FieldDefinitionResource> getAll(@PathVariable("mapId") String mapId) {
+    public FieldDefinitionListResource getAll(@PathVariable("mapId") String mapId, @PathVariable("pointDefId") String pointDefId) {
         // Daten laden
         List<FieldDefinitionEntity> fields = fieldDefinitionRepository.findByMapId(mapId);
 
         // Mappen
-        List<FieldDefinitionResource> result = (List<FieldDefinitionResource>) fields.stream().map(fieldDefinitionMapper::fromEntity).collect(Collectors.toList());
+        FieldDefinitionListResource result = fieldDefinitionListMapper.fromEntity(fields, mapId, pointDefId);
         return result;
     }
 
